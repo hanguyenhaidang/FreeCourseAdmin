@@ -58,6 +58,7 @@ import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
 
 const routes = [
+  { type: "title", title: "Manage Pages", key: "manage-pages" },
   {
     type: "collapse",
     name: "Dashboard",

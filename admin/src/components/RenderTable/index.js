@@ -54,28 +54,32 @@ function RenderTable(props) {
         {...(onSelection && {
           checkboxSelection: true,
           selectionModel: selected,
-          onSelectionModelChange: (selectRange) =>
-            setSelected([...selectRange]),
+          onSelectionModelChange: (selectRange) => setSelected([...selectRange]),
         })}
         sx={{
-          "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within":
-            {
-              outlineOffset: -2,
-            },
+          "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within": {
+            outlineOffset: -2,
+          },
         }}
         page={searchParams.page}
-        onPageChange={(value) =>
-          setSearchParams({ ...searchParams, page: value })
-        }
+        onPageChange={(value) => setSearchParams({ ...searchParams, page: value })}
         components={{
           NoRowsOverlay: () => (
-            <Stack className="justify-center items-center absolute inset-0">
+            <Stack
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+              }}
+            >
               {error ? (
                 <Alert severity="error"> {error}</Alert>
               ) : (
-                <Alert severity="warning">
-                  Không có dữ liệu - Vui lòng thử lại sau!!
-                </Alert>
+                <Alert severity="warning">Không có dữ liệu - Vui lòng thử lại sau!!</Alert>
               )}
             </Stack>
           ),
@@ -85,9 +89,7 @@ function RenderTable(props) {
           baseTextField: { sx: { "& .MuiInput-input": { height: 40 } } },
         }}
         pageSize={searchParams.page_size}
-        onPageSizeChange={(page_size) =>
-          setSearchParams({ ...searchParams, page_size: page_size })
-        }
+        onPageSizeChange={(page_size) => setSearchParams({ ...searchParams, page_size: page_size })}
         rowsPerPageOptions={rowsPerPageOptions}
         rowCount={totalRows}
         getRowId={(row) => {

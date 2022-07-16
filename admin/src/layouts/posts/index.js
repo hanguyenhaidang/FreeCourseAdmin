@@ -23,7 +23,6 @@ import SoftTypography from "components/SoftTypography";
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 
 // Data
@@ -77,7 +76,6 @@ function PostManagement() {
         </Card>
       </SoftBox>
       <PostTable />
-      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

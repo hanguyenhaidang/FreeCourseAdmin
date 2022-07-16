@@ -1,36 +1,13 @@
 import PropTypes from "prop-types";
 import { Box, Chip, Paper, Stack } from "@mui/material";
-import RenderTable from "components/render-table/RenderTable";
-// import Wrapper from "components/wrapper/Wrapper";
+import RenderTable from "components/RenderTable";
 import React, { useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Visibility, Edit } from "@mui/icons-material";
-// import Button from "components/button/Button";
-// import DeleteAction from "../table-cell/delete-action";
-// import { GET_MY_CREATED_COURSES_REQUEST } from "store/types/data-types/manage-course-types";
-// import { useDispatch } from "react-redux";
 import { getRandomItem } from "utils/array-utils";
 import colors from "utils/colors";
 import Image from "components/Image";
 import SoftButton from "components/SoftButton";
-
-// const ListTag = ({ row }) => {
-//   const colorArr = useMemo(
-//     () => row.tags?.map((item) => getRandomItem(colors)),
-//     [row.tags]
-//   );
-//   return (
-//     <Stack direction="row" gap={0.5}>
-//       {row.tags?.map((tag, index) => (
-//         <Chip
-//           key={index}
-//           sx={{ color: "#fff", backgroundColor: colorArr[index] }}
-//           label={tag.name}
-//         />
-//       ))}
-//     </Stack>
-//   );
-// };
 
 const PostTable = () => {
   // const dispatch = useDispatch();
@@ -109,18 +86,18 @@ const PostTable = () => {
   // return { data, totalRows };
   //}, [dispatch]);
 
+  const getData = async () => ({ data: [], totalRow: 0 });
+
   return (
-    <Stack gap={1} className="h-full">
-      <Paper className="grow flex flex-col min-h-[700px] p-1">
-        <RenderTable
-          params={{ page: 0, page_size: 10 }}
-          columns={columns}
-          rowIdField="_id"
-          rowHeight={100}
-          rowsPerPageOptions={[10, 25, 50]}
-          // getData={getData}
-        />
-      </Paper>
+    <Stack gap={1} width="100%" height={500}>
+      <RenderTable
+        params={{ page: 0, page_size: 10 }}
+        columns={columns}
+        rowIdField="_id"
+        rowHeight={100}
+        rowsPerPageOptions={[10, 25, 50]}
+        getData={getData}
+      />
     </Stack>
   );
 };
