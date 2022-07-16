@@ -5,9 +5,18 @@ import AvatarWrapper from "./avatar-wrapper/AvatarWrapper";
 import TextControl from "components/TextControl";
 import { accountType } from "constants/auth-constants";
 import { useAuthController } from "context/authContext";
+import { useSoftUIController } from "context";
+import SoftButton from "components/SoftButton";
+import { updateUserAccount } from "services/api/authAPI";
+import { getMyAccount } from "services/api/authAPI";
+import { LOGIN_SUCCESS } from "context/authContext";
+import { LOGIN_ERROR } from "context/authContext";
+import { LOGOUT } from "context/authContext";
 
 const AccountSetting = () => {
-  const [controller] = useAuthController();
+  const [uiController] = useSoftUIController();
+  const { sidenavColor, transparentSidenav } = uiController;
+  const [controller, dispatch] = useAuthController();
   const { user } = controller;
   const [form, setForm] = useState({
     email: "",
@@ -42,8 +51,18 @@ const AccountSetting = () => {
 
   const setAvt = useCallback((value) => setForm({ ...form, avatar: value }), [form]);
 
-  const updateInformation = useCallback(() => {
-    console.log(form);
+  const updateInformation = useCallback(async () => {
+    try {
+      await updateUserAccount(form);
+      getMyAccount()
+        .then(({ user }) => dispatch({ type: LOGIN_SUCCESS, payload: { user } }))
+        .catch((error) => {
+          dispatch({ type: LOGIN_ERROR, payload: error.message || error });
+          dispatch({ type: LOGOUT });
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }, [form]);
 
   return (
@@ -52,9 +71,14 @@ const AccountSetting = () => {
         <Grid item xs={12}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography>Ảnh nền, đại diện</Typography>
-            <Button variant="contained" startIcon={<Save />} onClick={updateInformation}>
+            <SoftButton
+              color={sidenavColor}
+              variant={transparentSidenav ? "gradient" : "outlined"}
+              startIcon={<Save />}
+              onClick={updateInformation}
+            >
               Lưu lại
-            </Button>
+            </SoftButton>
           </Stack>
         </Grid>
         <Grid item xs={12}>
@@ -66,9 +90,14 @@ const AccountSetting = () => {
         <Grid item xs={12}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography>Thông tin cá nhân</Typography>
-            <Button variant="contained" startIcon={<Save />} onClick={updateInformation}>
+            <SoftButton
+              color={sidenavColor}
+              variant={transparentSidenav ? "gradient" : "outlined"}
+              startIcon={<Save />}
+              onClick={updateInformation}
+            >
               Lưu lại
-            </Button>
+            </SoftButton>
           </Stack>
         </Grid>
         <Grid item xs={12}>
@@ -91,20 +120,10 @@ const AccountSetting = () => {
           <TextControl
             label="Ngày sinh"
             value={form.birthDay}
-            inputFormat="dd/MM/yyyy"
             onSave={(value) => setForm({ ...form, birthDay: value })}
             type="date"
           />
         </Grid>
-        {form.type === "student" && (
-          <Grid item xs={12}>
-            <TextControl
-              label="Mã số sinh viên"
-              value={form.sid}
-              onSave={(value) => setForm({ ...form, sid: value })}
-            />
-          </Grid>
-        )}
 
         <Grid item xs={12}>
           <TextControl

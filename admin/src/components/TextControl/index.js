@@ -1,11 +1,17 @@
 import { EditRounded } from "@mui/icons-material";
-import { Divider, Grid, Stack, TextField, Button } from "@mui/material";
+import { Divider, Grid, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SoftTypography from "components/SoftTypography";
+import { useSoftUIController } from "context";
+import SoftButton from "components/SoftButton";
+import SoftBox from "components/SoftBox";
+import SoftInput from "components/SoftInput";
 
 const TextControl = (props) => {
   const { label, type, onSave, value, id, placeholder, helper, ...others } = props;
+  const [uiController] = useSoftUIController();
+  const { sidenavColor, transparentSidenav } = uiController;
   const [editedMode, setEditedMode] = useState(false);
   const toggeEditedMode = () => {
     setEditedMode((state) => !state);
@@ -14,29 +20,37 @@ const TextControl = (props) => {
   const [text, setValue] = useState("");
 
   useEffect(() => {
-    setValue(value);
+    if (type === "date") {
+      setValue(value.split("/").reverse().join("-"));
+    } else {
+      setValue(value);
+    }
   }, [value]);
 
   return (
     <>
       {!editedMode ? (
         <Grid container spacing={1}>
-          <Grid item xs={12} sm={3}>
-            <SoftTypography
-              sx={{
-                fontWeight: 500,
-                mb: 0.5,
-              }}
-              component="span"
-              variant="body2"
-              htmlFor={id}
-            >
-              {label}
-            </SoftTypography>
-          </Grid>
-          <Grid item xs={8} sm={7}>
-            <SoftTypography variant="body2">{value}</SoftTypography>
-          </Grid>
+          {label && (
+            <Grid item xs={12} sm={3}>
+              <SoftTypography
+                sx={{
+                  fontWeight: 500,
+                  mb: 0.5,
+                }}
+                component="span"
+                variant="body2"
+                htmlFor={id}
+              >
+                {label}
+              </SoftTypography>
+            </Grid>
+          )}
+          {value && (
+            <Grid item xs={8} sm={7}>
+              <SoftTypography variant="body2">{value}</SoftTypography>
+            </Grid>
+          )}
           {onSave && (
             <Grid item xs={4} sm={2}>
               <SoftTypography
@@ -44,10 +58,13 @@ const TextControl = (props) => {
                 onClick={toggeEditedMode}
                 sx={{
                   "&:hover": {
-                    color: (theme) => theme.palette.primary.main,
+                    color: sidenavColor,
                   },
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  cursor: "pointer",
                 }}
-                className="flex gap-1 items-center cursor-pointer"
               >
                 <EditRounded /> Chỉnh sửa
               </SoftTypography>
@@ -56,41 +73,47 @@ const TextControl = (props) => {
         </Grid>
       ) : (
         <>
-          <TextField
-            label={label}
+          <SoftBox mb={1} ml={0.5}>
+            {label && (
+              <SoftTypography component="label" variant="body2" fontWeight="medium">
+                {label}
+              </SoftTypography>
+            )}
+          </SoftBox>
+          <SoftInput
             placeholder={placeholder}
             fullWidth
-            type={type}
             value={text}
+            type={type}
             onChange={(e) => {
               setValue(e.target ? e.target.value : e);
             }}
-            helper={helper}
-            margin={"none"}
             {...others}
           />
           <Stack direction="row" gap={1} mt={1} justifyContent="flex-end">
-            <Button
-              variant="contained"
-              sx={{ color: "#fff" }}
+            <SoftButton
+              variant="outlined"
+              color="dark"
               onClick={() => {
                 toggeEditedMode();
                 setValue(value);
               }}
+              size="small"
               width={80}
             >
               Hủy
-            </Button>
-            <Button
-              width={80}
-              variant="contained"
+            </SoftButton>
+            <SoftButton
+              size="small"
+              color={sidenavColor}
+              variant={transparentSidenav ? "gradient" : "outlined"}
               onClick={() => {
-                onSave && onSave(type === "date" ? text.toLocaleDateString() : text);
+                onSave && onSave(type === "date" ? text.split("-").reverse().join("/") : text);
                 toggeEditedMode();
               }}
             >
               Lưu
-            </Button>
+            </SoftButton>
           </Stack>
         </>
       )}

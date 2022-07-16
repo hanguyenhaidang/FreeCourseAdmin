@@ -26,3 +26,7 @@ export const register = async (body) => {
 export const changePass = async (body) => {
   return request(PUT, apiPath.changePassword, { body });
 };
+
+export const updateUserAccount = async (body) => {
+  return request(PUT, apiPath.editAccount, { body });
+};

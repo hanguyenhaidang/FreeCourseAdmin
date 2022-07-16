@@ -37,6 +37,10 @@ function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
+    sx: {
+      overflow: "unset",
+      whiteSpace: "nowrap!important",
+    },
   };
 }
 
@@ -73,7 +77,7 @@ function Overview() {
           </SoftTypography>
         </SoftBox>
 
-        <Stack direction={!matchLg ? "column" : "row"} width="100%">
+        <Stack direction={!matchLg ? "column" : "row"}>
           <Tabs
             orientation={!matchLg ? "horizontal" : "vertical"}
             variant="scrollable"
@@ -86,12 +90,8 @@ function Overview() {
               height: "fit-content",
             }}
           >
-            <Tab label="Thông tin cá nhân" className="capitalize items-start" {...a11yProps(0)} />
-            <Tab
-              label="Bảo mật và đăng nhập"
-              className="capitalize items-start"
-              {...a11yProps(1)}
-            />
+            <Tab label="Thông tin cá nhân" {...a11yProps(0)} />
+            <Tab label="Bảo mật và đăng nhập" {...a11yProps(1)} />
           </Tabs>
 
           <TabPanel value={selected} index={0}>

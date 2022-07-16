@@ -22,6 +22,7 @@ import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
+import { changePass } from "services/api/authAPI";
 
 const LoginAndSecuritySetting = () => {
   const [changePassMode, setChangePassMode] = useState(false);
@@ -44,20 +45,18 @@ const LoginAndSecuritySetting = () => {
   };
 
   const changePassword = () => {
-    // dispatch({
-    //   type: CHANGE_PASSWORD_REQUEST,
-    //   body: form,
-    //   callback: ({ success = null, error = null }) => {
-    //     setRegisState({ success, error });
-    //     if (success) {
-    //       setForm({
-    //         oldPassword: "",
-    //         newPassword: "",
-    //         confirmPassword: "",
-    //       });
-    //     }
-    //   },
-    // });
+    changePass(form)
+      .then((data) => {
+        setRegisState({ success: data, error: null });
+        setForm({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      })
+      .catch((error) => {
+        setRegisState({ success: null, error: error?.response?.data.message || error.message });
+      });
   };
 
   return (
