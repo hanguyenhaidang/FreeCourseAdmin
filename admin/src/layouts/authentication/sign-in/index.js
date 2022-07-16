@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Switch from "@mui/material/Switch";
@@ -32,66 +32,96 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
+import { useAuthController } from "context/authContext";
+import { Alert } from "@mui/material";
+import { login } from "services/api/authAPI";
+import { storeItem } from "utils/storeData";
+import { LOCAL_STORAGE } from "constants/storage-constants";
+import { LOGIN_SUCCESS } from "context/authContext";
+import { LOGIN_ERROR } from "context/authContext";
 
 function SignIn() {
-  const [rememberMe, setRememberMe] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [controller, dispatch] = useAuthController();
+  const { accessToken, error } = controller;
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
+  const doLogin = async () => {
+    try {
+      const { user, accessToken, refreshToken } = await login(email, password);
+      storeItem(LOCAL_STORAGE, "token", accessToken);
+      storeItem(LOCAL_STORAGE, "refreshToken", refreshToken);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: { user, accessToken, refreshToken },
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: LOGIN_ERROR, payload: error.response?.data || error.message || error });
+    }
+  };
 
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
+      title="Chào mừng quay trở lại"
+      description="Nhập email và mật khẩu của bạn để đăng nhập"
       image={curved9}
     >
       <SoftBox component="form" role="form">
+        <SoftBox mb={2}>
+          {error && (
+            <SoftBox mb={1} ml={0.5}>
+              <Alert severity="error">
+                Có lỗi xảy ra — <strong>{error}</strong>
+              </Alert>
+            </SoftBox>
+          )}
+        </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="email" placeholder="Email" />
+          <SoftInput
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            type="email"
+            placeholder="Nhập email"
+          />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
+              Mật khẩu
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="password" placeholder="Password" />
+          <SoftInput
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            type="password"
+            placeholder="Nhập mật khẩu"
+          />
         </SoftBox>
-        {/* <SoftBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-          <SoftTypography
-            variant="button"
-            fontWeight="regular"
-            onClick={handleSetRememberMe}
-            sx={{ cursor: "pointer", userSelect: "none" }}
-          >
-            &nbsp;&nbsp;Remember me
-          </SoftTypography>
-        </SoftBox> */}
         <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth>
-            sign in
+          <SoftButton
+            disabled={!(email && password)}
+            onClick={doLogin}
+            variant="gradient"
+            color="info"
+            fullWidth
+          >
+            Đăng nhập
           </SoftButton>
         </SoftBox>
-        {/* <SoftBox mt={3} textAlign="center">
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SoftTypography
-              component={Link}
-              to="/authentication/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SoftTypography>
-          </SoftTypography>
-        </SoftBox> */}
       </SoftBox>
     </CoverLayout>
   );

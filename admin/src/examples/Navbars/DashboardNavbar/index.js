@@ -57,11 +57,16 @@ import {
 // Images
 import team2 from "assets/images/team-2.jpg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
+import { Avatar, Typography } from "@mui/material";
+import { useAuthController } from "context/authContext";
+import { accountType } from "constants/auth-constants";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
+  const [authController] = useAuthController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
+  const { user } = authController;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
 
@@ -97,43 +102,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleCloseMenu = () => setOpenMenu(false);
 
   // Render the notifications menu
-  const renderMenu = () => (
-    <Menu
-      anchorEl={openMenu}
-      anchorReference={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      open={Boolean(openMenu)}
-      onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
-    >
-      <NotificationItem
-        image={<img src={team2} alt="person" />}
-        title={["New message", "from Laur"]}
-        date="13 minutes ago"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        image={<img src={logoSpotify} alt="person" />}
-        title={["New album", "by Travis Scott"]}
-        date="1 day"
-        onClick={handleCloseMenu}
-      />
-      <NotificationItem
-        color="secondary"
-        image={
-          <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white.main }}>
-            payment
-          </Icon>
-        }
-        title={["", "Payment successfully completed"]}
-        date="2 days"
-        onClick={handleCloseMenu}
-      />
-    </Menu>
-  );
 
   return (
     <AppBar
@@ -153,25 +121,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 icon={{ component: "search", direction: "left" }}
               />
             </SoftBox>
-            <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in">
-                <IconButton sx={navbarIconButton} size="small">
-                  <Icon
-                    sx={({ palette: { dark, white } }) => ({
-                      color: light ? white.main : dark.main,
-                    })}
-                  >
-                    account_circle
-                  </Icon>
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Sign in
-                  </SoftTypography>
-                </IconButton>
-              </Link>
+            <SoftBox sx={{ display: "flex", gap: 1 }} color={light ? "white" : "inherit"}>
               <IconButton
                 size="small"
                 color="inherit"
@@ -190,18 +140,51 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon>settings</Icon>
               </IconButton>
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
-              </IconButton>
-              {renderMenu()}
+
+              <Link to="/profile">
+                <SoftBox
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Avatar
+                    src={user?.userInformation?.avatar}
+                    sx={{
+                      height: 45,
+                      width: 45,
+                    }}
+                  />
+                  <SoftBox
+                    sx={{
+                      display: {
+                        xs: "none",
+                        lg: "flex",
+                      },
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        fontWeight: 500,
+                      }}
+                    >
+                      {user?.userInformation.fullName}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 10,
+                      }}
+                    >
+                      {accountType[user?.type?.name] || "Sinh viên"}
+                    </Typography>
+                  </SoftBox>
+                </SoftBox>
+              </Link>
             </SoftBox>
           </SoftBox>
         )}

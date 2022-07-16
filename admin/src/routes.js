@@ -42,7 +42,7 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+import SignOut from "layouts/authentication/sign-out";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -55,6 +55,7 @@ import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
+import Protected from "guards/Protected";
 
 const routes = [
   {
@@ -63,7 +64,11 @@ const routes = [
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: (
+      <Protected>
+        <Dashboard />
+      </Protected>
+    ),
     noCollapse: true,
   },
   {
@@ -102,23 +107,42 @@ const routes = [
     component: <PostManagement />,
     noCollapse: true,
   },
-  { type: "title", title: "Account Pages", key: "account-pages" },
+  { type: "title", title: "Profile Page", key: "account-pages" },
   {
     type: "collapse",
-    name: "Profile",
+    name: "Thông tin người dùng",
     key: "profile",
     route: "/profile",
     icon: <CustomerSupport size="12px" />,
-    component: <Profile />,
+    component: (
+      <Protected>
+        <Profile />
+      </Protected>
+    ),
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "Sign In",
     key: "sign-in",
+    hidden: true,
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
     component: <SignIn />,
+    noCollapse: true,
+  },
+  { type: "title", title: "Authentication", key: "authentication-title" },
+  {
+    type: "collapse",
+    name: "Đăng xuất",
+    key: "sign-out",
+    route: "/authentication/logout",
+    icon: <Document size="12px" />,
+    component: (
+      <Protected>
+        <SignOut />
+      </Protected>
+    ),
     noCollapse: true,
   },
 ];
