@@ -47,15 +47,16 @@ import SignOut from "layouts/authentication/sign-out";
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
-import Settings from "examples/Icons/Settings";
 import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
-import Cube from "examples/Icons/Cube";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
+import ManageCourse from "layouts/manage-course";
+import { LocalLibrary, Logout } from "@mui/icons-material";
+import CreateCourse from "layouts/manage-course/pages/CreateCourse";
+import { CourseProvider } from "context/courseContext";
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
@@ -92,11 +93,45 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <Cube size="12px" />,
-    component: <VirtualReality />,
+    name: "Quản lý khóa học",
+    key: "manage-course",
+    route: "/manage-course",
+    icon: <LocalLibrary size="12px" />,
+    component: (
+      <Protected>
+        <ManageCourse />
+      </Protected>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Tạo khóa học",
+    key: "manage-course-create",
+    route: "/manage-course/create",
+    hidden: true,
+    component: (
+      <Protected>
+        <CourseProvider>
+          <CreateCourse />
+        </CourseProvider>
+      </Protected>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Edit khóa học",
+    key: "manage-course-edit",
+    route: "/manage-course/edit/:courseId",
+    hidden: true,
+    component: (
+      <Protected>
+        <CourseProvider>
+          <CreateCourse type="edit" />
+        </CourseProvider>
+      </Protected>
+    ),
     noCollapse: true,
   },
   {
@@ -138,7 +173,7 @@ const routes = [
     name: "Đăng xuất",
     key: "sign-out",
     route: "/authentication/logout",
-    icon: <Document size="12px" />,
+    icon: <Logout size="12px" />,
     component: (
       <Protected>
         <SignOut />

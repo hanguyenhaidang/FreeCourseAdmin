@@ -12,6 +12,7 @@ function RenderTable(props) {
     rowIdField,
     getData,
     columns,
+    paginationMode = "client",
     rowsPerPageOptions = [15, 25, 50],
     ...others
   } = props;
@@ -62,7 +63,9 @@ function RenderTable(props) {
           },
         }}
         page={searchParams.page}
-        onPageChange={(value) => setSearchParams({ ...searchParams, page: value })}
+        onPageChange={(value) => {
+          setSearchParams({ ...searchParams, page: value });
+        }}
         components={{
           NoRowsOverlay: () => (
             <Stack
@@ -88,6 +91,7 @@ function RenderTable(props) {
           baseSelect: { sx: { "& .MuiInput-input": { height: 40 } } },
           baseTextField: { sx: { "& .MuiInput-input": { height: 40 } } },
         }}
+        paginationMode={paginationMode}
         pageSize={searchParams.page_size}
         onPageSizeChange={(page_size) => setSearchParams({ ...searchParams, page_size: page_size })}
         rowsPerPageOptions={rowsPerPageOptions}
@@ -109,6 +113,7 @@ RenderTable.propTypes = {
     page: PropTypes.number.isRequired,
     page_size: PropTypes.number.isRequired,
   }),
+  paginationMode: PropTypes.oneOf(["server", "client"]),
   rowIdField: PropTypes.string.isRequired,
   getData: PropTypes.func.isRequired,
   columns: PropTypes.array.isRequired,

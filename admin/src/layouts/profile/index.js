@@ -40,6 +40,11 @@ function a11yProps(index) {
     sx: {
       overflow: "unset",
       whiteSpace: "nowrap!important",
+      height: 50,
+      justifyContent: {
+        md: "flex-start",
+        xs: "center",
+      },
     },
   };
 }
