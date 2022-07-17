@@ -20,7 +20,7 @@ export const scrollSetting = (options) => {
     overflowX: "hidden",
     overflowY: "overlay",
     width: 8,
-    scrollThumbColor: (theme) => theme.palette.shadow.main + "50",
+    scrollThumbColor: (theme) => theme.palette.grey[700] + "50",
     ...options,
   };
   return {
