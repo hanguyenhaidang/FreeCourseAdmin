@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 import { Box, Chip, Paper, Stack } from "@mui/material";
 import RenderTable from "components/RenderTable";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Visibility, Edit } from "@mui/icons-material";
 import { getRandomItem } from "utils/array-utils";
 import colors from "utils/colors";
 import Image from "components/Image";
 import SoftButton from "components/SoftButton";
+import { getAllFeeds } from "../../../../services/api/blogAPI";
 
 const PostTable = () => {
   // const dispatch = useDispatch();
@@ -15,8 +16,8 @@ const PostTable = () => {
     {
       headerName: "Tác giả",
       field: "creator",
-      width: 300,
-      valueGetter: ({ row }) => row.creator?.userInformation?.fullName,
+      width: 200,
+      valueGetter: ({ row }) => row.creator,
     },
     {
       headerName: "Ảnh nền",
@@ -59,7 +60,7 @@ const PostTable = () => {
       width: 250,
       renderCell: (params) => (
         <Box>
-          <Link to={params.row.url}>
+          <Link to={""}>
             <SoftButton variant="contained">button</SoftButton>
           </Link>
           {/* <Link to={{ pathname: "/manage-course/edit/" + params.row._id }}>
@@ -70,23 +71,16 @@ const PostTable = () => {
       ),
     },
   ];
+  const getData = async () => {
+    const { data, total } = await getAllFeeds();
+    // console.log(data);
+    return { data, totalRows: total };
+  };
 
-  //const getData = useCallback(async () => {
-  // const { data, total: totalRows } = await new Promise((resolve, reject) => {
-  //   try {
-  //     dispatch({
-  //       type: GET_MY_CREATED_COURSES_REQUEST,
-  //       callback: (data) => resolve(data),
-  //     });
-  //   } catch (error) {
-  //     reject(error);
-  //   }
-  // });
-  // console.log({ data, totalRows });
-  // return { data, totalRows };
-  //}, [dispatch]);
-
-  const getData = async () => ({ data: [], totalRow: 0 });
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+  // const getData = async () => ({ data: [], totalRow: 0 });
 
   return (
     <Stack gap={1} width="100%" height={500}>

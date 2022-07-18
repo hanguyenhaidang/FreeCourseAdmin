@@ -119,7 +119,7 @@ export default function App() {
       shadow="sm"
       borderRadius="50%"
       position="fixed"
-      right="2rem"
+      right="5rem"
       bottom="2rem"
       zIndex={99}
       color="dark"
