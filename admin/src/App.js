@@ -48,6 +48,9 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 // Images
 import brand from "assets/images/logo.png";
 
+// styles
+import "styles.css";
+
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
@@ -119,8 +122,8 @@ export default function App() {
       shadow="sm"
       borderRadius="50%"
       position="fixed"
-      right="5rem"
-      bottom="2rem"
+      right="1rem"
+      bottom="1rem"
       zIndex={99}
       color="dark"
       sx={{ cursor: "pointer" }}
@@ -147,7 +150,7 @@ export default function App() {
               onMouseLeave={handleOnMouseLeave}
             />
             <Configurator />
-            {configsButton}
+            {/* {configsButton} */}
           </>
         )}
         {layout === "vr" && <Configurator />}
@@ -171,7 +174,7 @@ export default function App() {
             onMouseLeave={handleOnMouseLeave}
           />
           <Configurator />
-          {configsButton}
+          {/* {configsButton} */}
         </>
       )}
       {layout === "vr" && <Configurator />}

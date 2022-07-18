@@ -103,7 +103,7 @@ export function useAuthController() {
   const context = useContext(Auth);
 
   if (!context) {
-    throw new Error("useSoftUIController should be used inside the SoftUIControllerProvider.");
+    throw new Error("useAuthController should be used inside the AuthProvider.");
   }
 
   return context;
