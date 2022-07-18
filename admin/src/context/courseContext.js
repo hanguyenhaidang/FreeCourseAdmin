@@ -17,6 +17,7 @@ export const GET_COURSE_DETAIL_SUCCESS = "GET_COURSE_DETAIL_SUCCESS";
 export const GET_COURSE_DETAIL_REQUEST = "GET_COURSE_DETAIL_REQUEST";
 export const COURSE_ERROR = "COURSE_ERROR";
 export const GET_ALL_MODULES_SUCCESS = "GET_ALL_MODULES_SUCCESS";
+export const GET_LESSON_DATA_SUCCESS = "GET_LESSON_DATA_SUCCESS";
 
 const initialState = {
   teacher: null,
@@ -24,6 +25,7 @@ const initialState = {
   categories: [],
   tags: [],
   levels: [],
+  step: null,
   error: null,
 };
 
@@ -39,6 +41,11 @@ const reducer = (state = initState, action) => {
         levels: [],
         modules: [],
         error: null,
+      };
+    case GET_LESSON_DATA_SUCCESS:
+      return {
+        ...state,
+        step: payload,
       };
     case GET_COURSE_DETAIL_SUCCESS:
       return {

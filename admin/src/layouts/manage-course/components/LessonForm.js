@@ -3,12 +3,9 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   AppBar,
   Box,
-  FormControl,
   Grid,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
   Slide,
   Stack,
   LinearProgress,
@@ -16,7 +13,6 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  OutlinedInput,
   Card,
 } from "@mui/material";
 import {
@@ -38,6 +34,12 @@ import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import TextField from "./TextField";
 import SoftInput from "components/SoftInput";
+import { useCourseController } from "context/courseContext";
+import { createLesson } from "services/api/courseAPI";
+import { GET_ALL_MODULES_SUCCESS } from "context/courseContext";
+import { getAllModules } from "services/api/courseAPI";
+import { COURSE_ERROR } from "context/courseContext";
+import { updateStep } from "services/api/courseAPI";
 
 const UploadFile = ({ setValue }) => {
   const theme = useTheme();
@@ -174,7 +176,8 @@ function LessonForm({ goBack, open, moduleData, close }) {
   const theme = useTheme();
   const matchLg = useMediaQuery(theme.breakpoints.up("xl"));
   const [openContentDialog, setOpenContentDialog] = useState(false);
-  const { step } = { step: null };
+  const [controller, dispatch] = useCourseController();
+  const { step } = controller;
   const [formData, setFormData] = useState({
     title: "",
     url: "",
@@ -206,27 +209,28 @@ function LessonForm({ goBack, open, moduleData, close }) {
       (formData.url && (formData.type === "youtube" || formData.type === "video"))) &&
     formData.title;
 
-  const submitForm = () => {
+  const submitForm = async () => {
     const { courseId, id: moduleId } = moduleData;
     const body = formData;
     console.log(body, courseId, moduleId);
     if (step) {
-      // dispatch({
-      //   type: UPDATE_LESSON_REQUEST,
-      //   body,
-      //   courseId,
-      //   moduleId,
-      //   stepId: step._id,
-      //   callback: close,
-      // ;
+      try {
+        await updateStep(moduleId, step._id, body);
+        const { modules } = await getAllModules(courseId);
+        dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
+        close();
+      } catch (error) {
+        dispatch({ type: COURSE_ERROR, payload: error.message });
+      }
     } else {
-      // dispatch
-      //   type: CREATE_LESSON_REQUEST,
-      //   body,
-      //   courseId,
-      //   moduleId,
-      //   callback: close,
-      // ;
+      try {
+        await createLesson(moduleId, body);
+        const { modules } = await getAllModules(courseId);
+        dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
+        close();
+      } catch (error) {
+        dispatch({ type: COURSE_ERROR, payload: error.message });
+      }
     }
   };
 
@@ -339,11 +343,11 @@ function LessonForm({ goBack, open, moduleData, close }) {
                           setFormData({ ...formData, time });
                         }}
                       >
-                        {Array(12)
+                        {Array(60)
                           .fill(0)
                           .map((item, index) => (
-                            <MenuItem key={index} value={index * 5}>
-                              {index * 5} phút
+                            <MenuItem key={index} value={index}>
+                              {index} phút
                             </MenuItem>
                           ))}
                       </TextField>
@@ -446,15 +450,18 @@ function LessonForm({ goBack, open, moduleData, close }) {
                       maxWidth: "100%",
                     }}
                   >
-                    <SoftTypography
-                      variant="h6"
-                      textGradient
-                      color="info"
-                      fontWeight="bold"
-                      sx={{ position: "absolute", zIndex: 2, top: 5, left: 10 }}
-                    >
-                      Xem trước video
-                    </SoftTypography>
+                    {!formData.url && (
+                      <SoftTypography
+                        variant="h6"
+                        textGradient
+                        color="info"
+                        fontWeight="bold"
+                        sx={{ position: "absolute", zIndex: 2, top: 5, left: 10 }}
+                      >
+                        Xem trước video
+                      </SoftTypography>
+                    )}
+
                     <ReactPlayer
                       style={{
                         position: "absolute",
