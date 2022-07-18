@@ -203,7 +203,6 @@ export default function GroupList(props) {
                   )}
                   <div>
                     <IconButton
-                      // aria-controls={open ? "demo-customized-menu" : undefined}
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                       onClick={handleClick}
@@ -211,7 +210,6 @@ export default function GroupList(props) {
                       <MoreVertRounded />
                     </IconButton>
                     <StyledMenu
-                      // id="demo-customized-menu"
                       MenuListProps={{
                         "aria-labelledby": "demo-customized-button",
                       }}
@@ -325,10 +323,12 @@ export default function GroupList(props) {
       <Dialog
         open={openEditDialog}
         setOpen={setOpenEditDialog}
-        title="Thay đổi chủ đề khóa học"
+        title="Thay đổi chủ đề bài học"
         actions={
           <Stack sx={{ flexDirection: "row", justifyContent: "flex-end", gap: 1 }}>
-            <Button
+            <SoftButton
+              variant="outlined"
+              color="info"
               sx={{ height: 42 }}
               onClick={() => {
                 setOpenEditDialog(false);
@@ -336,11 +336,11 @@ export default function GroupList(props) {
               }}
             >
               Hủy
-            </Button>
-            <Button
+            </SoftButton>
+            <SoftButton
               sx={{ height: 42 }}
-              variant="contained"
-              disableElevation
+              variant="gradient"
+              color="info"
               disabled={value.length === 0}
               onClick={() => {
                 setOpenEditDialog(false);
@@ -348,7 +348,7 @@ export default function GroupList(props) {
               }}
             >
               Lưu lại
-            </Button>
+            </SoftButton>
           </Stack>
         }
       >

@@ -8,77 +8,88 @@ import SoftTypography from "components/SoftTypography";
 import { useSoftUIController } from "context";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCoursesWithCategory } from "services/api/courseAPI";
 import DeleteAction from "./components/DeleteAction";
 import ListTag from "./components/ListTag";
 
-const columns = [
-  {
-    headerName: "Ảnh nền",
-    field: "background",
-    width: 210,
-    renderCell: ({ row }) => (
-      <Image sx={{ aspectRatio: "16/9", p: 1, width: "100%" }} src={row.background} />
-    ),
-  },
-  {
-    headerName: "Tên khóa học",
-    field: "title",
-    width: 300,
-  },
-  {
-    headerName: "Danh mục",
-    field: "category",
-    valueGetter: ({ row }) => row.category?.name,
-    width: 180,
-    editable: true,
-  },
-  {
-    headerName: "Cấp độ",
-    field: "level",
-    valueGetter: ({ row }) => row.level?.name,
-    width: 130,
-    editable: true,
-  },
-  {
-    headerName: "Nhãn",
-    field: "tag",
-    sortable: false,
-    flex: 1,
-    minWidth: 320,
-    renderCell: ListTag,
-  },
-  {
-    headerName: "Học viên",
-    field: "participants",
-    valueGetter: ({ row }) => row.participants.length,
-    type: "number",
-  },
-  {
-    headerName: "Hành động",
-    field: "action",
-    width: 250,
-    renderCell: (params) => (
-      <Box>
-        <Link to={{ pathname: "/manage-course/edit/" + params.row._id }}>
-          <Button style={{ marginLeft: 16 }} variant="outlined">
-            <Edit color="info" />
-          </Button>
-        </Link>
-        <DeleteAction params={params} />
-      </Box>
-    ),
-  },
-];
-
 const ManageCourse = () => {
   const [controller] = useSoftUIController();
   const { sidenavColor, transparentSidenav } = controller;
+  const [search, setSearch] = useState({ page: 0 });
   const navigate = useNavigate();
 
-  const params = useMemo(() => ({ page: 0, page_size: 10 }), []);
+  const columns = useMemo(
+    () => [
+      {
+        headerName: "Ảnh nền",
+        field: "background",
+        width: 210,
+        renderCell: ({ row }) => (
+          <Image sx={{ aspectRatio: "16/9", p: 1, width: "100%" }} src={row.background} />
+        ),
+      },
+      {
+        headerName: "Tên khóa học",
+        field: "title",
+        width: 300,
+      },
+      {
+        headerName: "Danh mục",
+        field: "category",
+        valueGetter: ({ row }) => row.category?.name,
+        width: 180,
+        editable: true,
+      },
+      {
+        headerName: "Cấp độ",
+        field: "level",
+        valueGetter: ({ row }) => row.level?.name,
+        width: 130,
+        editable: true,
+      },
+      {
+        headerName: "Nhãn",
+        field: "tag",
+        sortable: false,
+        flex: 1,
+        minWidth: 320,
+        renderCell: ListTag,
+      },
+      {
+        headerName: "Học viên",
+        field: "participants",
+        valueGetter: ({ row }) => row.participants.length,
+        type: "number",
+      },
+      {
+        headerName: "Hành động",
+        field: "action",
+        width: 250,
+        renderCell: (params) => (
+          <Box>
+            <Link to={{ pathname: "/manage-course/edit/" + params.row._id }}>
+              <Button style={{ marginLeft: 16 }} variant="outlined">
+                <Edit color="info" />
+              </Button>
+            </Link>
+            <DeleteAction
+              params={params}
+              onDelete={() =>
+                setSearch((s) => ({
+                  page: 0,
+                }))
+              }
+            />
+          </Box>
+        ),
+      },
+    ],
+    []
+  );
+
+  const params = useMemo(() => ({ page: search.page, page_size: 10 }), [search]);
 
   const getData = useCallback(async ({ page = 0, page_size = 10 }) => {
     const { data, total: totalRows } = await new Promise((resolve, reject) => {

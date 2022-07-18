@@ -210,7 +210,7 @@ const CreateCourse = ({ type = "create" }) => {
           >
             <Tab label="Thông tin cơ bản" {...a11yProps(0)} />
             <Tab label="Nội dung khóa học" {...a11yProps(1)} />
-            <Tab label="Chủ đề khóa học" disabled={!courseData} {...a11yProps(2)} />
+            <Tab label="Chủ đề bài học" disabled={!courseData} {...a11yProps(2)} />
           </Tabs>
 
           <TabPanel index={0} value={selected}>
