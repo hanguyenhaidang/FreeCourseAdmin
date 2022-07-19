@@ -57,6 +57,7 @@ import ManageCourse from "layouts/manage-course";
 import { LocalLibrary, Logout } from "@mui/icons-material";
 import CreateCourse from "layouts/manage-course/pages/CreateCourse";
 import { CourseProvider } from "context/courseContext";
+import ManageUser from "layouts/manage-user";
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
@@ -93,6 +94,19 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Quản lý người dùng",
+    key: "manage-user",
+    route: "/manage-user",
+    icon: <LocalLibrary size="12px" />,
+    component: (
+      <Protected>
+        <ManageUser />
+      </Protected>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
     name: "Quản lý khóa học",
     key: "manage-course",
     route: "/manage-course",
@@ -104,6 +118,7 @@ const routes = [
     ),
     noCollapse: true,
   },
+
   {
     type: "collapse",
     name: "Tạo khóa học",
