@@ -2,15 +2,13 @@ import { DELETE, GET, POST, PUT } from "constants/services-constant";
 import request from "services/axios-client/request";
 import apiPath from "services/sevices.config";
 
-export const getCoursesWithCategory = (
-  category,
-  params = { page: 1, page_size: 12 }
-) => {
+export const getCoursesWithCategory = (category, params = { page: 1, page_size: 12 }) => {
   return request(GET, apiPath.getCoursesWithCategory(category), { params });
 };
 
-export const getCourseDetail = (id) =>
-  request(GET, apiPath.getCourseDetail(id));
+export const getCourseDetail = (id) => request(GET, apiPath.getCourseDetail(id));
+
+export const removeCourse = (id) => request(DELETE, apiPath.getCourse(id));
 
 export const getAllMyCourse = () => {
   return request(GET, apiPath.getAllMyCourse);

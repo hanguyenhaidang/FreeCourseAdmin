@@ -4,10 +4,20 @@ import { DeleteOutline } from "@mui/icons-material";
 import ConfirmDialog from "components/dialog/confirm-dialog";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
+import { useTheme } from "@mui/material";
+import { removeCourse } from "services/api/courseAPI";
 
-const DeleteAction = ({ params }) => {
+const DeleteAction = ({ params, onDelete }) => {
   const [open, setOpen] = React.useState(false);
-
+  const theme = useTheme();
+  const onAccept = async () => {
+    try {
+      await removeCourse(params.row._id);
+      onDelete();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <SoftButton
@@ -23,10 +33,11 @@ const DeleteAction = ({ params }) => {
         title={`Xóa khóa học`}
         setOpen={setOpen}
         deleted
-        onAccept={() => {}}
+        onAccept={onAccept}
       >
         <SoftTypography variant="body2">
-          Bạn có chắc chắn muốn xóa khóa học {params.row.title} này không
+          Bạn có chắc chắn muốn xóa khóa học{" "}
+          <strong style={{ color: theme.palette.error.light }}>{params.row.title}</strong> này không
         </SoftTypography>
       </ConfirmDialog>
     </>

@@ -14,22 +14,32 @@ import GroupList from "./module/GroupList";
 import { useCourseController } from "context/courseContext";
 import SoftTypography from "components/SoftTypography";
 import TextField from "./TextField";
+import { getStep, createModule, getAllModules } from "services/api/courseAPI";
+import {
+  GET_LESSON_DATA_SUCCESS,
+  GET_ALL_MODULES_SUCCESS,
+  COURSE_ERROR,
+} from "context/courseContext";
+import { editModule } from "services/api/courseAPI";
+import { removeModule } from "services/api/courseAPI";
 
 const AddModuleForm = ({ open }) => {
   const theme = useTheme();
   const [value, setValue] = useState("");
-  // const dispatch = useDispatch();
-  // const { courseData } = useSelector((state) => state.manageCourse);
+  const [controller, dispatch] = useCourseController();
+  const { courseDetail: courseData } = controller;
   const resetValue = () => setValue("");
 
-  const addNew = () => {
+  const addNew = async () => {
     if (courseData) {
-      // dispatch({
-      //   type: ADD_NEW_MODULE_REQUEST,
-      //   body: { title: value },
-      //   courseId: courseData._id,
-      //   callback: resetValue,
-      // });
+      try {
+        await createModule(courseData._id, { title: value });
+        const { modules } = await getAllModules(courseData._id);
+        dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
+        resetValue();
+      } catch (error) {
+        dispatch({ type: COURSE_ERROR, payload: error.message });
+      }
     }
   };
 
@@ -72,25 +82,36 @@ const ModuleList = ({ editMode, modules }) => {
     control,
     name: "modules",
   });
-  const update = (module) => {
+  const update = async (module) => {
     const { id: moduleId, name: title, courseId } = module;
-    // dispatch({ type: EDIT_MODULE_REQUEST, moduleId, courseId, title });
+    try {
+      await editModule(moduleId, { title });
+      const { modules } = await getAllModules(courseId);
+      dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
+    } catch (error) {
+      dispatch({ type: COURSE_ERROR, payload: error.message });
+    }
   };
-  const remove = (module) => {
+  const remove = async (module) => {
     const { id: moduleId, courseId } = module;
-    // dispatch({ type: REMOVE_MODULE_REQUEST, moduleId, courseId });
+    try {
+      await removeModule(courseId, moduleId);
+      const { modules } = await getAllModules(courseId);
+      dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
+    } catch (error) {
+      dispatch({ type: COURSE_ERROR, payload: error.message });
+    }
   };
 
   const stepProps = useMemo(
     () => ({
       getStepData: (moduleId, stepId) => {
-        // dispatch({ type: GET_LESSON_DATA_REQUEST, moduleId, stepId });
+        getStep(moduleId, stepId)
+          .then((data) => dispatch({ type: GET_LESSON_DATA_SUCCESS, payload: data }))
+          .catch((error) => dispatch({ type: COURSE_ERROR, payload: error.message }));
       },
       deleteStep: (courseId, moduleId, stepId) => {
         // dispatch({ type: DELETE_LESSON_REQUEST, moduleId, stepId, courseId });
-      },
-      updateStep: (moduleId, stepId, body) => {
-        // dispatch({ type: UPDATE_LESSON_REQUEST, moduleId, stepId, body });
       },
     }),
     []
@@ -129,18 +150,21 @@ function ModuleForm() {
     if (!modules) {
       return [];
     }
+    console.log(modules);
     return modules.reduce((arr, module) => {
-      const name = module.title;
-      const id = module._id;
-      const courseId = module.courseId;
-      const steps = module.steps.map((step) => ({
-        name: step.title,
-        id: step._id,
-        href: editMode ? `/manage-course/learning/${module.courseId}/${step._id}` : "./",
-        type: step.type === "lesson" ? "video" : "test",
-        time: step.time,
-      }));
-      arr.push({ id, name, steps, courseId });
+      if (module) {
+        const name = module.title;
+        const id = module._id;
+        const courseId = module.courseId;
+        const steps = module.steps.map((step) => ({
+          name: step.title,
+          id: step._id,
+          href: editMode ? `/manage-course/learning/${module.courseId}/${step._id}` : "./",
+          type: step.type === "lesson" ? "video" : "test",
+          time: step.time,
+        }));
+        arr.push({ id, name, steps, courseId });
+      }
       return arr;
     }, []);
   }, [modules, editMode]);
