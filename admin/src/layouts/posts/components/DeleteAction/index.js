@@ -23,7 +23,9 @@ const DeleteAction = ({ params }) => {
         title={`Xóa khóa học`}
         setOpen={setOpen}
         deleted
-        onAccept={() => {}}
+        onAccept={() => {
+          console.log("Hello World");
+        }}
       >
         <SoftTypography variant="body2">
           Bạn có chắc chắn muốn xóa bài viết {params.row.title} này không ?

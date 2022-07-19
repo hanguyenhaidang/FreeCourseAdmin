@@ -54,9 +54,10 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
 import ManageCourse from "layouts/manage-course";
-import { LocalLibrary, Logout } from "@mui/icons-material";
+import { LocalLibrary, LocalOfferOutlined, Logout } from "@mui/icons-material";
 import CreateCourse from "layouts/manage-course/pages/CreateCourse";
 import { CourseProvider } from "context/courseContext";
+import CategoryTagManagement from "layouts/manage-category-tag";
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
@@ -141,6 +142,15 @@ const routes = [
     route: "/post",
     icon: <ArticleOutlinedIcon size="12px" />,
     component: <PostManagement />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Categories & Tags",
+    key: "category-tag",
+    route: "/category-tag",
+    icon: <LocalOfferOutlined size="12px" />,
+    component: <CategoryTagManagement />,
     noCollapse: true,
   },
   { type: "title", title: "Profile Page", key: "account-pages" },
