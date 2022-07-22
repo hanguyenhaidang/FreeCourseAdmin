@@ -8,13 +8,16 @@ import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 // import PostTable from "./components/PostTable";
 import { useSoftUIController } from "context";
-import { Divider, Stack, styled } from "@mui/material";
+import { Divider, Snackbar, Stack, styled } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import { Add } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Comment from "components/Comment";
 import CategoryTable from "./components/CategoryTable";
 import TagTable from "./components/TagTable";
+import AddAction from "./components/action/Add/AddAction";
+import { useMessageController } from "context/messageContext";
+import { RESET_MESSAGE } from "context/messageContext";
 
 const ManageCard = styled(Card)(() => ({
   padding: "18px 20px",
@@ -22,11 +25,27 @@ const ManageCard = styled(Card)(() => ({
 
 function CategoryTagManagement() {
   const [controller] = useSoftUIController();
+  const [messageController, dispatch] = useMessageController();
   const { sidenavColor, transparentSidenav } = controller;
-  const [post, setPost] = useState(null);
-  // const [comment, setComment] = useState(post?.comments || []);
-  const [showComment, setShowComment] = useState(false);
+  const { message, show, reset } = messageController;
 
+  const [openSnack, setOpenSnack] = useState(false);
+  const [snackMessage, setSnackMessage] = useState(null);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    dispatch({ type: RESET_MESSAGE });
+    setOpenSnack(false);
+  };
+
+  useEffect(() => {
+    if (message && show) {
+      setSnackMessage(message);
+      setOpenSnack(true);
+    }
+  }, [message, show]);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -34,11 +53,12 @@ function CategoryTagManagement() {
         <ManageCard>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
             <SoftBox>
-              <SoftBox>
-                <SoftTypography variant="h5" fontWeight="bold" textGradient color={sidenavColor}>
-                  Quản lý Category và Tag
-                </SoftTypography>
-              </SoftBox>
+              <SoftTypography variant="h5" fontWeight="bold" textGradient color={sidenavColor}>
+                Quản lý danh mục
+              </SoftTypography>
+            </SoftBox>
+            <SoftBox>
+              <AddAction type={"category"} />
             </SoftBox>
           </Stack>
           <SoftBox sx={{ display: "flex", flexDirection: "col" }}>
@@ -48,11 +68,12 @@ function CategoryTagManagement() {
         <ManageCard>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
             <SoftBox>
-              <SoftBox>
-                <SoftTypography variant="h5" fontWeight="bold" textGradient color={sidenavColor}>
-                  Quản lý Category và Tag
-                </SoftTypography>
-              </SoftBox>
+              <SoftTypography variant="h5" fontWeight="bold" textGradient color={sidenavColor}>
+                Quản lý nhãn
+              </SoftTypography>
+            </SoftBox>
+            <SoftBox>
+              <AddAction type={"tag"} />
             </SoftBox>
           </Stack>
           <SoftBox sx={{ display: "flex", flexDirection: "col" }}>
@@ -60,6 +81,12 @@ function CategoryTagManagement() {
           </SoftBox>
         </ManageCard>
       </Stack>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={snackMessage}
+      />
     </DashboardLayout>
   );
 }

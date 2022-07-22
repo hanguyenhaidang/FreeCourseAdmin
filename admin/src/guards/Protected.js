@@ -8,7 +8,7 @@ import authApi from "services/api/authAPI";
 import { getMyAccount } from "services/api/authAPI";
 
 // eslint-disable-next-line react/prop-types
-function Protected({ roles = ["teacher"], redirectPath = "/authentication/sign-in", children }) {
+function Protected({ roles = ["admin"], redirectPath = "/authentication/sign-in", children }) {
   const [controller, dispatch] = useAuthController();
   const { accessToken, user } = controller;
 
