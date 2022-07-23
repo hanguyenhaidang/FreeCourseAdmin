@@ -40,6 +40,12 @@ const apiPath = {
   getMyCreatedCourses: "course/created-by-me",
   getStep: (module, step) => `/module/${module}/step/${step}`,
   completeLesson: (module, step) => `/module/${module}/step/${step}/complete`,
+  addCategory: "/category/create",
+  addTag: "/tag/create",
+  editCategory: (id) => `/category/update/${id}`,
+  editTag: (id) => `/tag/update/${id}`,
+  deleteCategory: (id) => `/category/delete/${id}`,
+  deleteTag: (id) => `/tag/delete/${id}`,
 };
 
 export default apiPath;
