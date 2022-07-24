@@ -88,6 +88,7 @@ const AvatarWrapper = ({ data, setAvatar, setBg }) => {
             lg: "20/5",
           },
           position: "relative",
+          border: "1px solid #000",
         }}
       >
         <input type="file" accept="image/*" hidden ref={bgRef} onChange={changeBgHandler} />

@@ -36,53 +36,47 @@ Coded by www.creative-tim.com
 */
 
 // Soft UI Dashboard React layouts
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import VirtualReality from "layouts/virtual-reality";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignOut from "layouts/authentication/sign-out";
 
 // Soft UI Dashboard React icons
-import Shop from "examples/Icons/Shop";
 import Document from "examples/Icons/Document";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
 import ManageCourse from "layouts/manage-course";
-import { LocalLibrary, LocalOfferOutlined, Logout } from "@mui/icons-material";
+import { LocalLibrary, LocalOfferOutlined, Logout, People } from "@mui/icons-material";
 import CreateCourse from "layouts/manage-course/pages/CreateCourse";
-import { CourseProvider } from "context/courseContext";
 import ManageUser from "layouts/manage-user";
 import CategoryTagManagement from "layouts/manage-category-tag";
-import { MessageProvider } from "context/messageContext";
+import AddUser from "layouts/manage-user/AddUser";
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
   {
     type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <Shop size="12px" />,
+    name: "Quản lý người dùng",
+    key: "manage-user",
+    route: "/manage-user",
+    icon: <People size="12px" />,
     component: (
       <Protected>
-        <Dashboard />
+        <ManageUser />
       </Protected>
     ),
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Quản lý người dùng",
-    key: "manage-user",
-    route: "/manage-user",
-    icon: <LocalLibrary size="12px" />,
+    name: "Thêm người dùng",
+    key: "add-user",
+    route: "/manage-user/add-user",
+    hidden: true,
     component: (
       <Protected>
-        <ManageUser />
+        <AddUser />
       </Protected>
     ),
     noCollapse: true,
@@ -108,9 +102,7 @@ const routes = [
     hidden: true,
     component: (
       <Protected>
-        <CourseProvider>
-          <CreateCourse />
-        </CourseProvider>
+        <CreateCourse />
       </Protected>
     ),
     noCollapse: true,
@@ -123,9 +115,7 @@ const routes = [
     hidden: true,
     component: (
       <Protected>
-        <CourseProvider>
-          <CreateCourse type="edit" />
-        </CourseProvider>
+        <CreateCourse type="edit" />
       </Protected>
     ),
     noCollapse: true,
@@ -138,9 +128,7 @@ const routes = [
     icon: <ArticleOutlinedIcon size="12px" />,
     component: (
       <Protected>
-        <MessageProvider>
-          <PostManagement />
-        </MessageProvider>
+        <PostManagement />
       </Protected>
     ),
     noCollapse: true,
@@ -153,9 +141,7 @@ const routes = [
     icon: <LocalOfferOutlined size="12px" />,
     component: (
       <Protected>
-        <MessageProvider>
-          <CategoryTagManagement />
-        </MessageProvider>
+        <CategoryTagManagement />
       </Protected>
     ),
     noCollapse: true,

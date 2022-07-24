@@ -18,6 +18,7 @@ export const GET_COURSE_DETAIL_REQUEST = "GET_COURSE_DETAIL_REQUEST";
 export const COURSE_ERROR = "COURSE_ERROR";
 export const GET_ALL_MODULES_SUCCESS = "GET_ALL_MODULES_SUCCESS";
 export const GET_LESSON_DATA_SUCCESS = "GET_LESSON_DATA_SUCCESS";
+export const RESET_ERROR = "RESET_ERROR";
 
 const initialState = {
   teacher: null,
@@ -32,6 +33,11 @@ const initialState = {
 const reducer = (state = initState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     case GET_COURSE_DETAIL_REQUEST:
       return {
         teacher: null,

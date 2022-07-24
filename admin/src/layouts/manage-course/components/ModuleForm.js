@@ -38,7 +38,10 @@ const AddModuleForm = ({ open }) => {
         dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
         resetValue();
       } catch (error) {
-        dispatch({ type: COURSE_ERROR, payload: error.message });
+        dispatch({
+          type: COURSE_ERROR,
+          payload: error.response?.data?.message || error.response?.data || error.message || error,
+        });
       }
     }
   };
@@ -99,7 +102,10 @@ const ModuleList = ({ editMode, modules }) => {
       const { modules } = await getAllModules(courseId);
       dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
     } catch (error) {
-      dispatch({ type: COURSE_ERROR, payload: error.message });
+      dispatch({
+        type: COURSE_ERROR,
+        payload: error.response?.data?.message || error.response?.data || error.message || error,
+      });
     }
   };
 

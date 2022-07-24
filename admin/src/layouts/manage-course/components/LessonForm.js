@@ -220,7 +220,10 @@ function LessonForm({ goBack, open, moduleData, close }) {
         dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
         close();
       } catch (error) {
-        dispatch({ type: COURSE_ERROR, payload: error.message });
+        dispatch({
+          type: COURSE_ERROR,
+          payload: error.response?.data?.message || error.response?.data || error.message || error,
+        });
       }
     } else {
       try {
@@ -229,7 +232,10 @@ function LessonForm({ goBack, open, moduleData, close }) {
         dispatch({ type: GET_ALL_MODULES_SUCCESS, payload: modules });
         close();
       } catch (error) {
-        dispatch({ type: COURSE_ERROR, payload: error.message });
+        dispatch({
+          type: COURSE_ERROR,
+          payload: error.response?.data?.message || error.response?.data || error.message || error,
+        });
       }
     }
   };

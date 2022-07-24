@@ -14,6 +14,7 @@ MessageContext.displayName = "MessageContext";
 export const SET_MESSAGE = "SET_MESSAGE";
 export const SHOW_MESSAGE = "SHOW_MESSAGE";
 export const RESET_MESSAGE = "RESET_MESSAGE";
+export const RESET_ERROR = "RESET_ERROR";
 const initialState = {
   message: null,
   show: false,
@@ -23,6 +24,11 @@ const initialState = {
 const reducer = (state = initState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     case SET_MESSAGE:
       return {
         message: payload.message,

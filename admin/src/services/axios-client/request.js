@@ -1,14 +1,16 @@
 import queryString from "query-string";
 import { GET } from "../../constants/services-constant";
 import axiosClient from "./client";
+import { trackPromise } from "react-promise-tracker";
 
 const request = (
   method = GET,
   url = "/",
   data = { params: {}, body: null, form: null },
-  config = {}
+  config = {},
+  area = "general"
 ) => {
-  return axiosClient({
+  const http = axiosClient({
     url,
     method,
     data: data.body || data.form,
@@ -18,6 +20,7 @@ const request = (
     },
     config,
   });
+  return trackPromise(http, area);
 };
 
 export default request;

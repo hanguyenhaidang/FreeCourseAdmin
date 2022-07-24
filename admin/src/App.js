@@ -50,6 +50,8 @@ import brand from "assets/images/logo.png";
 
 // styles
 import "styles.css";
+import PageLoading from "layouts/loading/PageLoading";
+import ErrorPage from "layouts/error/ErrorPage";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -156,8 +158,10 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="*" element={<Navigate to="/manage-course" />} />
         </Routes>
+        <PageLoading />
+        <ErrorPage />
       </ThemeProvider>
     </CacheProvider>
   ) : (
@@ -180,8 +184,10 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/manage-course" />} />
       </Routes>
+      <PageLoading />
+      <ErrorPage />
     </ThemeProvider>
   );
 }
