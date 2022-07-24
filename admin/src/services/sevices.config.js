@@ -3,6 +3,7 @@ const apiPath = {
   register: "/auth/signup",
   editAccount: "account/edit",
   changePassword: "/auth/updatePassword",
+  allAccount: "/account/all",
   getCourse: (id) => "/course/" + id,
   getModule: (courseId, moduleId) => `/module/${courseId}/${moduleId}`,
   updateModule: (id) => `/module/${id}`,

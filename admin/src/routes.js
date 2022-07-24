@@ -46,10 +46,8 @@ import SignOut from "layouts/authentication/sign-out";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
 import Document from "examples/Icons/Document";
 import CustomerSupport from "examples/Icons/CustomerSupport";
-import CreditCard from "examples/Icons/CreditCard";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
@@ -57,6 +55,7 @@ import ManageCourse from "layouts/manage-course";
 import { LocalLibrary, LocalOfferOutlined, Logout } from "@mui/icons-material";
 import CreateCourse from "layouts/manage-course/pages/CreateCourse";
 import { CourseProvider } from "context/courseContext";
+import ManageUser from "layouts/manage-user";
 import CategoryTagManagement from "layouts/manage-category-tag";
 import { MessageProvider } from "context/messageContext";
 
@@ -77,20 +76,15 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
+    name: "Quản lý người dùng",
+    key: "manage-user",
+    route: "/manage-user",
+    icon: <LocalLibrary size="12px" />,
+    component: (
+      <Protected>
+        <ManageUser />
+      </Protected>
+    ),
     noCollapse: true,
   },
   {
@@ -138,7 +132,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Bài viết",
+    name: "Quản lý bài viết",
     key: "post",
     route: "/post",
     icon: <ArticleOutlinedIcon size="12px" />,
