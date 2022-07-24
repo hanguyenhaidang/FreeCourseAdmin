@@ -39,14 +39,14 @@ const AddUser = (props) => {
   const setAvt = React.useCallback((value) => setForm({ ...form, avatar: value }), [form]);
 
   const regisAccount = () => {
-    try {
-      register(form).then(() => navigate("/manage-user"));
-    } catch (error) {
-      dispatch({
-        type: AUTH_ERROR,
-        payload: error.response?.data?.message || error.response?.data || error.message || error,
-      });
-    }
+    register(form)
+      .then(() => navigate("/manage-user"))
+      .catch((error) =>
+        dispatch({
+          type: AUTH_ERROR,
+          payload: error.response?.data?.message || error.response?.data || error.message || error,
+        })
+      );
   };
 
   return (
