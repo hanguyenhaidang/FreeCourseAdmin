@@ -20,12 +20,18 @@ import App from "App";
 // Soft UI Dashboard React Context Provider
 import { SoftUIControllerProvider } from "context";
 import { AuthProvider } from "context/authContext";
+import { CourseProvider } from "context/courseContext";
+import { MessageProvider } from "context/messageContext";
 
 ReactDOM.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
       <AuthProvider>
-        <App />
+        <CourseProvider>
+          <MessageProvider>
+            <App />
+          </MessageProvider>
+        </CourseProvider>
       </AuthProvider>
     </SoftUIControllerProvider>
   </BrowserRouter>,

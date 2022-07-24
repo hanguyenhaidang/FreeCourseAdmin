@@ -21,6 +21,7 @@ export const AUTHENTICATION_REQUEST = "AUTHENTICATION_REQUEST";
 export const CHANGE_PASSWORD_REQUEST = "CHANGE_PASSWORD_REQUEST";
 export const UPDATE_ACCOUNT = "UPDATE_ACCOUNT";
 export const AUTH_ERROR = "AUTH_ERROR";
+export const RESET_ERROR = "RESET_ERROR";
 
 const initialState = {
   user: null,
@@ -36,6 +37,11 @@ const initialState = {
 const reducer = (state = initState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     case LOGIN_REQUEST:
       return {
         ...state,

@@ -2,9 +2,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Dialog from "./dialog";
-import Button from "../button/Button";
+import SoftButton from "components/SoftButton";
 
-const AlertDialog = ({ open, setOpen, title, children, sx, ...others }) => {
+const AlertDialog = ({ open, setOpen, title, onClose, children, sx, ...others }) => {
   return (
     <Dialog
       title={title}
@@ -12,9 +12,17 @@ const AlertDialog = ({ open, setOpen, title, children, sx, ...others }) => {
       open={open}
       setOpen={setOpen}
       actions={
-        <Button width={80} onClick={() => setOpen(false)}>
+        <SoftButton
+          width={120}
+          variant="gradient"
+          color="info"
+          onClick={() => {
+            setOpen(false);
+            onClose();
+          }}
+        >
           Đóng
-        </Button>
+        </SoftButton>
       }
       {...others}
     >

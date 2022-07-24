@@ -21,6 +21,8 @@ const ManageUser = () => {
   const [search, setSearch] = useState({ page: 0 });
   const navigate = useNavigate();
 
+  const params = useMemo(() => ({ page: search.page, page_size: 10 }), [search]);
+
   const columns = useMemo(
     () => [
       {
@@ -79,7 +81,7 @@ const ManageUser = () => {
         width: 250,
         renderCell: (params) => (
           <Box>
-            <EditAction params={params} />
+            <EditAction params={params} onEdit={() => setSearch({ page: params.page })} />
             <DeleteAction params={params} onDelete={() => setSearch({ page: 0 })} />
           </Box>
         ),
@@ -87,8 +89,6 @@ const ManageUser = () => {
     ],
     []
   );
-
-  const params = useMemo(() => ({ page: search.page, page_size: 10 }), [search]);
 
   const getData = useCallback(async ({ page = 0, page_size = 10 }) => {
     const { data, total: totalRows } = await new Promise((resolve, reject) => {
@@ -135,7 +135,7 @@ const ManageUser = () => {
             color={sidenavColor}
             variant={transparentSidenav ? "gradient" : "outlined"}
             startIcon={<Add />}
-            onClick={() => navigate("/manage-course/create")}
+            onClick={() => navigate("/manage-user/add-user")}
           >
             Thêm người dùng
           </SoftButton>

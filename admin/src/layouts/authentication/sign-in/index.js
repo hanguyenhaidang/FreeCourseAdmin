@@ -39,18 +39,23 @@ import { storeItem } from "utils/storeData";
 import { LOCAL_STORAGE } from "constants/storage-constants";
 import { LOGIN_SUCCESS } from "context/authContext";
 import { LOGIN_ERROR } from "context/authContext";
+import { AUTH_ERROR } from "context/authContext";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [controller, dispatch] = useAuthController();
-  const { accessToken, error } = controller;
+  const { accessToken, user, error } = controller;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && user?.type.name === "admin") {
       navigate("/");
+    }
+
+    if (user && user?.type.name !== "admin") {
+      dispatch({ type: AUTH_ERROR, payload: "Tài khoản của bạn không phải là admin" });
     }
   }, [accessToken, navigate]);
 

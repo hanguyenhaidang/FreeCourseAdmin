@@ -2,6 +2,7 @@ const apiPath = {
   login: "/auth/signin",
   register: "/auth/signup",
   editAccount: "account/edit",
+  editUserAccount: (id) => `account/${id}`,
   changePassword: "/auth/updatePassword",
   allAccount: "/account/all",
   getCourse: (id) => "/course/" + id,
