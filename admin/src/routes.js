@@ -59,7 +59,6 @@ import ManageUser from "layouts/manage-user";
 import CategoryTagManagement from "layouts/manage-category-tag";
 import { MessageProvider } from "context/messageContext";
 
-
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
   {
@@ -133,11 +132,7 @@ const routes = [
   },
   {
     type: "collapse",
-<<<<<<< HEAD
     name: "Quản lý bài viết",
-=======
-    name: "Bài viết",
->>>>>>> main
     key: "post",
     route: "/post",
     icon: <ArticleOutlinedIcon size="12px" />,
