@@ -76,24 +76,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
     name: "Quản lý người dùng",
     key: "manage-user",
     route: "/manage-user",
@@ -118,7 +100,6 @@ const routes = [
     ),
     noCollapse: true,
   },
-
   {
     type: "collapse",
     name: "Tạo khóa học",
@@ -151,7 +132,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Post",
+    name: "Quản lý bài viết",
     key: "post",
     route: "/post",
     icon: <ArticleOutlinedIcon size="12px" />,

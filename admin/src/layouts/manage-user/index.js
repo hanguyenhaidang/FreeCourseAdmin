@@ -1,16 +1,19 @@
 import { Add, Edit, Visibility } from "@mui/icons-material";
-import { Box, Button, Card, Stack } from "@mui/material";
+import { Avatar, Box, Button, Card, Stack } from "@mui/material";
 import Image from "components/Image";
 import RenderTable from "components/RenderTable";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
+import { accountType } from "constants/auth-constants";
 import { useSoftUIController } from "context";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import React, { useCallback, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getCoursesWithCategory } from "services/api/courseAPI";
+import { getAllAccount } from "services/api/accountAPI";
+import DeleteAction from "./components/DeleteAction";
+import EditAction from "./components/EditAction";
 
 const ManageUser = () => {
   const [controller] = useSoftUIController();
@@ -21,49 +24,63 @@ const ManageUser = () => {
   const columns = useMemo(
     () => [
       {
-        headerName: "Ảnh nền",
-        field: "background",
+        headerName: "Người dùng",
+        field: "user",
         width: 210,
         renderCell: ({ row }) => (
-          <Image sx={{ aspectRatio: "16/9", p: 1, width: "100%" }} src={row.background} />
+          <Stack direction="row" height="fit-content" gap={1} alignItems="center">
+            <Avatar src={row.userInformation.avatar} />
+            <SoftTypography variant="body2">{row.userInformation.fullName}</SoftTypography>
+          </Stack>
         ),
       },
       {
-        headerName: "Tên khóa học",
-        field: "title",
-        width: 300,
+        headerName: "Email",
+        field: "email",
+        width: 230,
       },
       {
-        headerName: "Danh mục",
-        field: "category",
-        valueGetter: ({ row }) => row.category?.name,
-        width: 180,
-        editable: true,
+        headerName: "Mật khẩu",
+        field: "password",
+        valueGetter: ({ row }) => "**********",
+        width: 120,
       },
       {
-        headerName: "Cấp độ",
+        headerName: "Loại tài khoản",
         field: "level",
-        valueGetter: ({ row }) => row.level?.name,
-        width: 130,
-        editable: true,
+        valueGetter: ({ row }) => accountType[row.type?.name],
+        width: 120,
       },
+
       {
-        headerName: "Học viên",
-        field: "participants",
-        valueGetter: ({ row }) => row.participants.length,
-        type: "number",
+        headerName: "Ngày sinh",
+        field: "birthDay",
+        valueGetter: ({ row }) => row.userInformation.birthDay,
+        width: 120,
       },
+
+      {
+        headerName: "Thời gian tạo tài khoản",
+        field: "createdAt",
+        valueGetter: ({ row }) => new Date(row.createdAt).toLocaleString(),
+        width: 220,
+      },
+
+      {
+        headerName: "Thay đổi gần nhất",
+        field: "updatedAt",
+        valueGetter: ({ row }) => new Date(row.updatedAt).toLocaleString(),
+        width: 220,
+      },
+
       {
         headerName: "Hành động",
         field: "action",
         width: 250,
         renderCell: (params) => (
           <Box>
-            <Link to={{ pathname: "/manage-course/edit/" + params.row._id }}>
-              <Button style={{ marginLeft: 16 }} variant="outlined">
-                <Edit color="info" />
-              </Button>
-            </Link>
+            <EditAction params={params} />
+            <DeleteAction params={params} onDelete={() => setSearch({ page: 0 })} />
           </Box>
         ),
       },
@@ -75,11 +92,14 @@ const ManageUser = () => {
 
   const getData = useCallback(async ({ page = 0, page_size = 10 }) => {
     const { data, total: totalRows } = await new Promise((resolve, reject) => {
-      getCoursesWithCategory("all", {
+      getAllAccount({
         page: page + 1,
         page_size,
       })
-        .then((res) => resolve(res))
+        .then((res) => {
+          console.log(res);
+          resolve(res);
+        })
         .catch((error) => reject(error));
     });
     return { data, totalRows };
@@ -117,7 +137,7 @@ const ManageUser = () => {
             startIcon={<Add />}
             onClick={() => navigate("/manage-course/create")}
           >
-            Thêm khóa học
+            Thêm người dùng
           </SoftButton>
         </Stack>
         <SoftBox sx={{ minHeight: 800, display: "flex", flexDirection: "col" }}>
@@ -125,7 +145,7 @@ const ManageUser = () => {
             params={params}
             columns={columns}
             rowIdField="_id"
-            rowHeight={100}
+            rowHeight={80}
             rowsPerPageOptions={[10, 25, 50]}
             paginationMode="server"
             getData={getData}
