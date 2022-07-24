@@ -46,18 +46,19 @@ import SignOut from "layouts/authentication/sign-out";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
 import Document from "examples/Icons/Document";
 import CustomerSupport from "examples/Icons/CustomerSupport";
-import CreditCard from "examples/Icons/CreditCard";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import PostManagement from "layouts/posts";
 import Protected from "guards/Protected";
 import ManageCourse from "layouts/manage-course";
-import { LocalLibrary, Logout } from "@mui/icons-material";
+import { LocalLibrary, LocalOfferOutlined, Logout } from "@mui/icons-material";
 import CreateCourse from "layouts/manage-course/pages/CreateCourse";
 import { CourseProvider } from "context/courseContext";
 import ManageUser from "layouts/manage-user";
+import CategoryTagManagement from "layouts/manage-category-tag";
+import { MessageProvider } from "context/messageContext";
+
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
@@ -132,11 +133,36 @@ const routes = [
   },
   {
     type: "collapse",
+<<<<<<< HEAD
     name: "Quản lý bài viết",
+=======
+    name: "Bài viết",
+>>>>>>> main
     key: "post",
     route: "/post",
     icon: <ArticleOutlinedIcon size="12px" />,
-    component: <PostManagement />,
+    component: (
+      <Protected>
+        <MessageProvider>
+          <PostManagement />
+        </MessageProvider>
+      </Protected>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Danh mục và nhãn",
+    key: "category-tag",
+    route: "/category-tag",
+    icon: <LocalOfferOutlined size="12px" />,
+    component: (
+      <Protected>
+        <MessageProvider>
+          <CategoryTagManagement />
+        </MessageProvider>
+      </Protected>
+    ),
     noCollapse: true,
   },
   { type: "title", title: "Profile Page", key: "account-pages" },

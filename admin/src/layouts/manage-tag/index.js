@@ -59,7 +59,6 @@ function PostManagement() {
                 variant={/*transparentSidenav ? "gradient" : "outlined"*/ "gradient"}
                 onClick={() => {
                   setPost();
-                  setShowComment(false);
                 }}
               >
                 Đóng
