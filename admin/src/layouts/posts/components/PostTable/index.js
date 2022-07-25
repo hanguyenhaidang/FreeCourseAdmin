@@ -14,6 +14,24 @@ import SoftTypography from "components/SoftTypography";
 import DeleteAction from "../DeleteAction";
 import { format } from "date-fns";
 
+const Creator = ({ row }) => {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await getAccountInfor(row.creator);
+        setName(data?.userInformation?.fullName);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetch();
+  }, [row]);
+
+  return name;
+};
+
 const PostTable = (props) => {
   const { setPost } = props;
   const [search, setSearch] = useState({ page: 0 });
@@ -24,9 +42,8 @@ const PostTable = (props) => {
         .then((res) => resolve(res))
         .catch((error) => reject(error));
     });
-
     return data;
-  });
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -34,17 +51,7 @@ const PostTable = (props) => {
         headerName: "Tác giả",
         field: "creator",
         width: 200,
-        valueGetter: async ({ row }) => {
-          try {
-            const data = await getAccountInfor(row.creator);
-            // console.log(data);
-            // return data?.userInformation?.fullName;
-            return row.creator;
-          } catch (error) {
-            // console.log(error);
-            return row.creator;
-          }
-        },
+        renderCell: Creator,
       },
       {
         headerName: "Ảnh nền",
@@ -126,10 +133,10 @@ const PostTable = (props) => {
     });
 
     return { data, totalRows: total };
-  });
+  }, []);
 
   return (
-    <Stack gap={1} width="100%" height={500}>
+    <Stack gap={1} width="100%" height={700}>
       <RenderTable
         params={params}
         columns={columns}

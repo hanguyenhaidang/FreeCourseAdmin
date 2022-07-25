@@ -11,7 +11,6 @@ axiosClient.interceptors.request.use(
   function (config) {
     //If local storage has toke, then attach it into request
     const accessToken = localStorage.getItem("token");
-    console.log(accessToken);
     config.headers.common.Authorization = `Bearer ${accessToken}`;
 
     //Using the form-data
@@ -29,7 +28,6 @@ axiosClient.interceptors.request.use(
 // Add a response interceptor
 axiosClient.interceptors.response.use(
   function (response) {
-    console.log(response);
     if (response.status === 200 || response.status === 201) {
     }
     return response.data;
