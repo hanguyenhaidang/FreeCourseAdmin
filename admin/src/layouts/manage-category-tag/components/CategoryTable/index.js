@@ -70,13 +70,18 @@ const CategoryTable = (props) => {
   const params = useMemo(() => ({ page: search.page, page_size: 10 }), [search]);
 
   const getData = useCallback(async () => {
-    const data = await new Promise((resolve, reject) => {
-      getAllCategories()
-        .then((res) => resolve(res))
-        .catch((error) => reject(error));
-    });
-    return { data, totalRows: data.length };
-  });
+    try {
+      const data = await new Promise((resolve, reject) => {
+        getAllCategories()
+          .then((res) => resolve(res))
+          .catch((error) => reject(error));
+      });
+      return { data, totalRows: data.length };
+    } catch (error) {
+      console.log(error);
+      return { data: [], totalRows: 0 };
+    }
+  }, []);
 
   return (
     <Stack gap={1} width="100%" height={500}>
