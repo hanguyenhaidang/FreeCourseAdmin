@@ -6,8 +6,8 @@
   "description": "ReactJS version of Soft UI Dashboard by Creative Tim",
   "private": true,
   "engines": {
-    "node": "14 || 15 || 16",
-    "npm": ">=6"
+  "node": "<=14.x.x",
+  "npm": "<=6.x.x"
   },
   "dependencies": {
     "@emotion/cache": "11.9.3",
@@ -48,10 +48,11 @@
     "stylis-plugin-rtl": "2.1.1",
     "uuid": "8.3.2",
     "web-vitals": "2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "serve": "^14.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
