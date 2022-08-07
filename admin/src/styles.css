@@ -32,3 +32,7 @@
   margin-inline-start: 40px;
   margin-inline-end: 40px;
 }
+.content img {
+  max-width: 100%;
+  height: unset;
+}
