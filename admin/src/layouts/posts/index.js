@@ -66,7 +66,10 @@ function PostManagement() {
               </SoftButton>
             </Stack>
             <Divider />
-            <SoftBox sx={{ display: "flex", flexDirection: "column", padding: "5px 12px" }}>
+            <SoftBox
+              className="content"
+              sx={{ display: "flex", flexDirection: "column", padding: "5px 12px" }}
+            >
               <SoftBox>
                 <div dangerouslySetInnerHTML={{ __html: post?.content && post.content }}></div>
               </SoftBox>

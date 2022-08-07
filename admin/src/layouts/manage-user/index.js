@@ -28,7 +28,7 @@ const ManageUser = () => {
       {
         headerName: "Người dùng",
         field: "user",
-        width: 210,
+        width: 310,
         renderCell: ({ row }) => (
           <Stack direction="row" height="fit-content" gap={1} alignItems="center">
             <Avatar src={row.userInformation.avatar} />
