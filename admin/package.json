@@ -1,12 +1,11 @@
 {
-  "name": "soft-ui-dashboard-react",
+  "name": "tdt-learning-admin",
   "version": "4.0.0",
-  "author": "Creative Tim",
+  "author": "Nguyen Van Huy",
   "license": "UNLICENSED",
-  "description": "ReactJS version of Soft UI Dashboard by Creative Tim",
+  "description": "TDT Learning Admin",
   "private": true,
   "engines": {
-    "node": "14 || 15 || 16",
     "npm": ">=6"
   },
   "dependencies": {
