@@ -52,6 +52,7 @@ import CreateCourse from "layouts/manage-course/pages/CreateCourse";
 import ManageUser from "layouts/manage-user";
 import CategoryTagManagement from "layouts/manage-category-tag";
 import AddUser from "layouts/manage-user/AddUser";
+import { Navigate } from "react-router-dom";
 
 const routes = [
   { type: "title", title: "Manage Pages", key: "manage-pages" },
@@ -77,6 +78,19 @@ const routes = [
     component: (
       <Protected>
         <AddUser />
+      </Protected>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Home",
+    key: "add-user",
+    route: "/",
+    hidden: true,
+    component: (
+      <Protected>
+        <Navigate to="/manage-user" />
       </Protected>
     ),
     noCollapse: true,

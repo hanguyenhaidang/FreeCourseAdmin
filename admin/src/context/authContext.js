@@ -78,6 +78,7 @@ const reducer = (state = initState, action) => {
         loadingRegister: false,
       };
     case LOGOUT:
+      localStorage.clear();
       return {
         user: null,
         isLogin: false,
