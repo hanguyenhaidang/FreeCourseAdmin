@@ -1,5 +1,5 @@
-import { Add, Edit, Visibility } from "@mui/icons-material";
-import { Box, Button, Card, Stack } from "@mui/material";
+import { Add, Edit, Visibility, ContentCopyRounded } from "@mui/icons-material";
+import { Box, Button, Card, Stack, IconButton } from "@mui/material";
 import Image from "components/Image";
 import RenderTable from "components/RenderTable";
 import SoftBox from "components/SoftBox";
@@ -62,6 +62,26 @@ const ManageCourse = () => {
         field: "participants",
         valueGetter: ({ row }) => row.participants.length,
         type: "number",
+      },
+      {
+        headerName: "Mật khẩu",
+        field: "password",
+        renderCell: (params) => (
+          <Box display="flex" flexDirection="row" alignItems="center">
+            Censored password{" "}
+            {!params.row.password && (
+              <IconButton
+                color="primary"
+                onClick={() => {
+                  navigator.clipboard.writeText(`password`);
+                }}
+              >
+                <ContentCopyRounded />
+              </IconButton>
+            )}
+          </Box>
+        ),
+        minWidth: 300,
       },
       {
         headerName: "Hành động",
