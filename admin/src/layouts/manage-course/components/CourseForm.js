@@ -48,7 +48,7 @@ const PasswordGenerateField = () => {
   } = useFormContext();
   return (
     <>
-      <Stack sx={{ mb: 2, flexDirection: "row", alignItems: "flex-end", gap: 1.5 }}>
+      <Stack sx={{ flexDirection: "row", alignItems: "flex-end", gap: 1.5 }}>
         <TextField
           label="Mật khẩu khóa học"
           variant="outlined"
@@ -101,7 +101,7 @@ const ResultBox = () => {
 
   return (
     <>
-      <Divider sx={{ mb: 5 }} orientation="horizontal" />
+      <Divider sx={{ mb: 5, borderWidth: 2, borderColor: "info.main" }} orientation="horizontal" />
       <Stack sx={{ mb: 3, flexDirection: "row", alignItems: "center", gap: 3 }}>
         <Typography className="font-medium">Kết quả đạt được</Typography>
         <SoftButton
@@ -443,7 +443,6 @@ const CourseForm = () => {
           <Grid item xs={12}>
             <PasswordGenerateField />
           </Grid>
-
           <Grid item xs={12}>
             <ResultBox />
           </Grid>
