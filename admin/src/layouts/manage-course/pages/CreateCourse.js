@@ -45,7 +45,7 @@ function a11yProps(index) {
 const courseSchema = yup.object().shape({
   title: yup.string().max(100).required("Tiêu đề khóa học không được để trống"),
   content: yup.string().required("Nội dung khóa học không được để trống"),
-  shortDesc: yup.string().max(255).required("Mô tả ngắn cho khóa học không được để trống"),
+  shortDesc: yup.string().max(500).required("Mô tả ngắn cho khóa học không được để trống"),
   level: yup.string().required("Cấp độ của khóa học không được để trống"),
   category: yup.string().required("Danh mục khóa học không được để trống"),
   background: yup.string().required("Ảnh nền không được để trống"),
@@ -72,6 +72,7 @@ const CreateCourse = ({ type = "create" }) => {
     background: "",
     gains: [],
     modules: [],
+    password: "",
   });
 
   const methods = useForm({
@@ -116,6 +117,7 @@ const CreateCourse = ({ type = "create" }) => {
       methods.setValue("background", courseData.background);
       methods.setValue("gains", courseData.gains);
       methods.setValue("modules", courseData.modules);
+      methods.setValue("password", courseData.password ?? "");
     } else {
       methods.setValue("tags", []);
       methods.setValue("title", "");
@@ -126,6 +128,7 @@ const CreateCourse = ({ type = "create" }) => {
       methods.setValue("background", "");
       methods.setValue("gains", []);
       methods.setValue("modules", []);
+      methods.setValue("password", "");
     }
   }, [courseData, methods]);
 

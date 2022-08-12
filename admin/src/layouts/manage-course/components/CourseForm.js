@@ -17,7 +17,7 @@ import {
   LinearProgress,
   Alert,
 } from "@mui/material";
-import { Delete, DeleteOutline, Add } from "@mui/icons-material";
+import { Delete, DeleteOutline, Add, Remove, AutorenewRounded } from "@mui/icons-material";
 
 import { scrollSetting } from "utils/classUltis";
 import ConfirmDialog from "components/dialog/confirm-dialog";
@@ -29,8 +29,60 @@ import SoftButton from "components/SoftButton";
 import { useCourseController } from "context/courseContext";
 import SoftInput from "components/SoftInput";
 import TextField from "./TextField";
+import { generateRandomString } from "utils/number-utils";
 
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
+
+const PasswordGenerateField = () => {
+  const handleGenerate = () => {
+    setValue("password", generateRandomString(10));
+  };
+  const clearPass = () => {
+    setValue("password", "");
+  };
+  const {
+    register,
+    formState: { errors },
+    getValues,
+    setValue,
+  } = useFormContext();
+  return (
+    <>
+      <Stack sx={{ mb: 2, flexDirection: "row", alignItems: "flex-end", gap: 1.5 }}>
+        <TextField
+          label="Mật khẩu khóa học"
+          variant="outlined"
+          fullWidth
+          readOnly
+          value={getValues("password") ?? ""}
+          {...register("password")}
+          error={errors.password ? true : false}
+        />
+        <SoftButton
+          startIcon={<Remove />}
+          variant="gradient"
+          color="error"
+          sx={{ height: 42 }}
+          onClick={clearPass}
+        >
+          Xóa
+        </SoftButton>
+        <SoftButton
+          startIcon={<AutorenewRounded />}
+          sx={{
+            minWidth: 180,
+            height: 42,
+          }}
+          variant="gradient"
+          color="primary"
+          onClick={handleGenerate}
+        >
+          Tạo mật khẩu
+        </SoftButton>
+      </Stack>
+    </>
+  );
+};
 
 const ResultBox = () => {
   const [list, setList] = useState([]);
@@ -386,6 +438,10 @@ const CourseForm = () => {
               </Paper>
               <FormHelperText>Thêm tag để khóa học dễ dàng được tìm thấy</FormHelperText>
             </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <PasswordGenerateField />
           </Grid>
 
           <Grid item xs={12}>

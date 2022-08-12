@@ -22,6 +22,7 @@ import { SoftUIControllerProvider } from "context";
 import { AuthProvider } from "context/authContext";
 import { CourseProvider } from "context/courseContext";
 import { MessageProvider } from "context/messageContext";
+import "prismjs/themes/prism-tomorrow.css";
 
 ReactDOM.render(
   <BrowserRouter>

@@ -29,6 +29,7 @@ const TextField = forwardRef(
       placeholder,
       helperText,
       error,
+      readOnly,
       select,
       children,
       ...other
@@ -51,6 +52,7 @@ const TextField = forwardRef(
             type={type}
             onChange={onChange}
             icon={icon}
+            readOnly={readOnly}
             ref={ref}
             {...other}
           />

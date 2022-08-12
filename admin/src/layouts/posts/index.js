@@ -11,8 +11,10 @@ import { useSoftUIController } from "context";
 import { Divider, Stack, styled } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import { Add } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Comment from "components/Comment";
+import Prism from "prismjs";
+import ReactHtmlParser from "react-html-parser";
 
 const ManageCard = styled(Card)(() => ({
   padding: "18px 20px",
@@ -22,8 +24,11 @@ function PostManagement() {
   const [controller] = useSoftUIController();
   const { sidenavColor, transparentSidenav } = controller;
   const [post, setPost] = useState(null);
-  // const [comment, setComment] = useState(post?.comments || []);
   const [showComment, setShowComment] = useState(false);
+  useEffect(() => {
+    Prism.highlightAll();
+    console.log(Prism);
+  }, [post]);
 
   return (
     <DashboardLayout>
@@ -66,13 +71,8 @@ function PostManagement() {
               </SoftButton>
             </Stack>
             <Divider />
-            <SoftBox
-              className="content"
-              sx={{ display: "flex", flexDirection: "column", padding: "5px 12px" }}
-            >
-              <SoftBox>
-                <div dangerouslySetInnerHTML={{ __html: post?.content && post.content }}></div>
-              </SoftBox>
+            <SoftBox sx={{ display: "flex", flexDirection: "column", padding: "5px 12px" }}>
+              <SoftBox className="content">{ReactHtmlParser(post?.content || "")}</SoftBox>
               <Divider />
               <SoftBox>
                 <SoftButton
